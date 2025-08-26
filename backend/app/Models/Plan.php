@@ -4,18 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Member extends Model
+class Plan extends Model
 {
+
     protected $fillable = [
         'name',
-        'email',
-        'phone_number',
-        'address',
-        'gender',
-        'date_of_birth',
-        'notes',
-        'photo',
-        'status',
+        'type',
+        'sessions',
+        'duration',
+        'price',
     ];
 
     // relationships
@@ -23,6 +20,4 @@ class Member extends Model
     {
         return $this->hasMany(Membership::class);
     }
-
-
 }
