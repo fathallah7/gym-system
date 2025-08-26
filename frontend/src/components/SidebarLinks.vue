@@ -32,6 +32,7 @@ onMounted(() => {
         <div>
             <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">Menu</h3>
             <ul class="space-y-2">
+                
                 <!-- Menu Item Dashboard -->
                 <li>
                     <RouterLink to="home"
@@ -43,16 +44,7 @@ onMounted(() => {
                             </path>
                         </svg>
                         Dashboard
-                        <svg class="ml-auto w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M4.792 7.396l5.208 5.208 5.208-5.208"></path>
-                        </svg>
                     </RouterLink>
-                    <ul class="pl-8 space-y-1 hidden" data-dropdown="dashboard">
-                        <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg">eCommerce</a></li>
-                        <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg">eCommerce</a></li>
-                    </ul>
                 </li>
 
                 <!-- Menu Item Calendar -->
@@ -68,7 +60,7 @@ onMounted(() => {
                     </a>
                 </li>
 
-                <!-- Menu Item Profile -->
+                <!-- Menu New Member -->
                 <li>
                     <RouterLink to="new-member" 
                     class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg" :class="{'bg-gray-100 rounded-lg' : $route.path === '/new-member'}">
@@ -82,71 +74,6 @@ onMounted(() => {
                     </RouterLink>
                 </li>
 
-                <!-- Menu Item Forms -->
-                <li>
-                    <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
-                        <svg class="w-6 h-6 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 5h18v14H3V5zm4 4h10m-10 4h10"></path>
-                        </svg>
-                        Forms
-                        <svg class="ml-auto w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M4.792 7.396l5.208 5.208 5.208-5.208"></path>
-                        </svg>
-                    </a>
-                    <ul class="pl-8 space-y-1 hidden" data-dropdown="forms">
-                        <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg">Form Elements</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- Menu Item Tables -->
-                <li>
-                    <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
-                        <svg class="w-6 h-6 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 5h18v14H3V5zm0 4h18m-18 4h18"></path>
-                        </svg>
-                        Tables
-                        <svg class="ml-auto w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M4.792 7.396l5.208 5.208 5.208-5.208"></path>
-                        </svg>
-                    </a>
-                    <ul class="pl-8 space-y-1 hidden" data-dropdown="tables">
-                        <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg">Basic Tables</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- Menu Item Pages -->
-                <li>
-                    <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
-                        <svg class="w-6 h-6 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
-                            </path>
-                        </svg>
-                        Pages
-                        <svg class="ml-auto w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M4.792 7.396l5.208 5.208 5.208-5.208"></path>
-                        </svg>
-                    </a>
-                    <ul class="pl-8 space-y-1 hidden" data-dropdown="pages">
-                        <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg">Blank
-                                Page</a></li>
-                        <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg">404
-                                Error</a></li>
-                    </ul>
-                </li>
             </ul>
         </div>
 
