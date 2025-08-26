@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule as ValidationRule;
 
 class MemberRequest extends FormRequest
 {
@@ -21,9 +23,18 @@ class MemberRequest extends FormRequest
      */
     public function rules(): array
     {
+        $memberId = $this->route('member')?->id;
         return [
             'name' => 'required|string|max:255',
-            'email' => 'nullable|string|email|max:255|unique:members,email,' . $this->member->id,
+
+            'email' => [
+                'nullable',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('members', 'email')->ignore($memberId),
+            ],
+            
             'phone_number' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'gender' => 'nullable|string|max:255',
@@ -33,5 +44,4 @@ class MemberRequest extends FormRequest
             'status' => 'nullable|string|max:255',
         ];
     }
-
 }
