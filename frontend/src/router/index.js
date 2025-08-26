@@ -4,6 +4,7 @@ import LoginView from '@/views/Auth/LoginView.vue'
 import ForgetPasswordView from '@/views/Auth/ForgetPasswordView.vue'
 import ResetPasswordView from '@/views/Auth/ResetPasswordView.vue'
 import HomeView from '@/views/HomeView.vue'
+import NewMemberView from '@/views/Members/NewMemberView.vue'
 
 
 const router = createRouter({
@@ -32,6 +33,12 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: HomeView,
+      meta: { layout: 'AppLayout' , requiresAuth: true },
+    },
+    {
+      path: '/new-member',
+      name: 'new-member',
+      component: NewMemberView,
       meta: { layout: 'AppLayout' , requiresAuth: true },
     },
     {

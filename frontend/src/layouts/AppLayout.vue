@@ -28,9 +28,9 @@ const closeSidebar = () => {
             <Navbar :isSidebarOpen="isSidebarOpen" @toggle-sidebar="toggleSidebar" />
 
             <!-- Page Content -->
-            <main class="flex-1 overflow-y-auto">
+            <main class="flex-1 overflow-y-auto" :class="[isSidebarOpen ? 'lg:ml-80' : 'lg:ml-0']">
                 <div class="min-h-screen bg-gray-50 p-6">
-                    <div class="max-w-5xl mx-auto">
+                    <div class="max-w-8xl mx-auto">
                         <slot />
                     </div>
                 </div>

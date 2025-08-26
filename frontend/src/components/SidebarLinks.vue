@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router';
 
 
 
+
 const logout = () => {
     localStorage.removeItem('token');
 };
@@ -33,7 +34,8 @@ onMounted(() => {
             <ul class="space-y-2">
                 <!-- Menu Item Dashboard -->
                 <li>
-                    <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                    <RouterLink to="home"
+                    class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg" :class="{'bg-gray-100 rounded-lg' : $route.path === '/home'}">
                         <svg class="w-6 h-6 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -46,7 +48,7 @@ onMounted(() => {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                 d="M4.792 7.396l5.208 5.208 5.208-5.208"></path>
                         </svg>
-                    </a>
+                    </RouterLink>
                     <ul class="pl-8 space-y-1 hidden" data-dropdown="dashboard">
                         <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg">eCommerce</a></li>
                         <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg">eCommerce</a></li>
@@ -68,15 +70,16 @@ onMounted(() => {
 
                 <!-- Menu Item Profile -->
                 <li>
-                    <a href="profile.html" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                    <RouterLink to="new-member" 
+                    class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg" :class="{'bg-gray-100 rounded-lg' : $route.path === '/new-member'}">
                         <svg class="w-6 h-6 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z">
                             </path>
                         </svg>
-                        User Profile
-                    </a>
+                        New Member 
+                    </RouterLink>
                 </li>
 
                 <!-- Menu Item Forms -->
