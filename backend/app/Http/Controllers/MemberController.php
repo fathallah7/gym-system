@@ -35,6 +35,7 @@ class MemberController extends Controller
      */
     public function show(Member $member)
     {
+        $member->load('memberships.plan');
         return response()->json($member);
     }
 
