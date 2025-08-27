@@ -6,12 +6,11 @@ import ResetPasswordView from '@/views/Auth/ResetPasswordView.vue'
 import HomeView from '@/views/HomeView.vue'
 import NewMemberView from '@/views/Members/NewMemberView.vue'
 import MembersView from '@/views/Members/MembersView.vue'
-
+import MemberView from '@/views/Members/MemberView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-
     {
       path: '/login',
       name: 'login',
@@ -34,19 +33,24 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: HomeView,
-      meta: { layout: 'AppLayout' , requiresAuth: true },
+      meta: { layout: 'AppLayout', requiresAuth: true },
     },
     {
       path: '/new-member',
       name: 'new-member',
       component: NewMemberView,
-      meta: { layout: 'AppLayout' , requiresAuth: true },
+      meta: { layout: 'AppLayout', requiresAuth: true },
     },
     {
       path: '/members',
       name: 'members',
       component: MembersView,
-      meta: { layout: 'AppLayout' , requiresAuth: true },
+      meta: { layout: 'AppLayout', requiresAuth: true },
+    },
+    {
+      path: '/members/:id',
+      name: 'MemberView',
+      component: MemberView,
     },
     {
       path: '/:pathMatch(.*)*',
@@ -60,7 +64,10 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.requiresAuth && !token) {
     next('/login')
-  } else if ((to.name === 'login' || to.name === 'forget-password' || to.name === 'password-reset') && token) {
+  } else if (
+    (to.name === 'login' || to.name === 'forget-password' || to.name === 'password-reset') &&
+    token
+  ) {
     next('/dashboard')
   } else {
     next()
