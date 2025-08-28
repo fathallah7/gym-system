@@ -2,9 +2,12 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { onMounted } from 'vue';
+import { useToast } from 'vue-toastification';
 import Spinner from '@/components/Spinner.vue';
 
 const isLoading = ref(false);
+
+const toast = useToast();
 
 const members = ref([]);
 
@@ -21,6 +24,17 @@ const fetchMembers = async () => {
     }
 };
 
+const deleteMember = async ($id) => {
+    if (confirm('Are you sure you want to delete this member?')) {
+        try {
+            await axios.delete(`/member/${$id}`);
+            toast.success('Member deleted successfully!');
+            fetchMembers();
+        } catch (error) {
+            toast.error('Failed to delete member.');
+        }
+    }
+};
 
 onMounted(() => {
     fetchMembers();
@@ -116,11 +130,7 @@ onMounted(() => {
                                 class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                                 <i class="fa-solid fa-address-card"></i>
                             </button>
-                            <button
-                                class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <button
+                            <button @click="deleteMember(member.id)"
                                 class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
