@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('/member', MemberController::class);
-    Route::apiResource('/plan', PlanController::class);
+    Route::apiResource('/plans', PlanController::class);
 
 });
 
