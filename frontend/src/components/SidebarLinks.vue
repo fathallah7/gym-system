@@ -63,7 +63,7 @@ onMounted(() => {
                 <!-- Menu  Members -->
                 <li>
                     <RouterLink to="members" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/members' || '/member' }">
+                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/members' }">
                         <i class="fa-solid fa-users w-6 mr-2 text-gray-600"></i>
                         Members
                     </RouterLink>
