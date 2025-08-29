@@ -7,7 +7,6 @@ import { useToast } from 'vue-toastification';
 const router = useRouter();
 const toast = useToast();
 const isLoading = ref(false);
-const errors = reactive({});
 
 const form = reactive({
     name: '',
@@ -16,21 +15,21 @@ const form = reactive({
     address: '',
     notes: '',
     email: '',
-    phone_number: ''
+    phone_number: '',
+    errors: {}
 });
 
 const submitForm = async () => {
     try {
         isLoading.value = true;
-        Object.keys(errors).forEach(key => { errors[key] = ''; });
-        errors.value = {};
+        form.errors = {};
 
         const response = await axios.post('/member', form);
         Object.keys(form).forEach(key => { form[key] = ''; });
         toast.success(response.data.message);
     } catch (error) {
         if (error.response?.status === 422) {
-            Object.assign(errors, error.response.data.errors);
+            form.errors = error.response.data.errors;
         } else {
             toast.error(error.response?.data?.message || 'Failed to add member.');
         }
@@ -72,9 +71,9 @@ const submitForm = async () => {
                                     <label class="mb-1.5 block text-sm font-medium text-gray-700">Name</label>
                                     <input v-model="form.name" type="text" placeholder="Enter Member Name"
                                         class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10 focus:outline-none"
-                                        :class="{ 'border-red-500': errors.name }" />
-                                    <div v-if="errors.name" class="error">
-                                        <p class="text-sm text-red-700">{{ errors.name[0] }}</p>
+                                        :class="{ 'border-red-500': form.errors.name }" />
+                                    <div v-if="form.errors.name" class="error">
+                                        <p class="text-sm text-red-700">{{ form.errors.name[0] }}</p>
                                     </div>
                                 </div>
 
@@ -84,7 +83,7 @@ const submitForm = async () => {
                                     <div class="relative">
                                         <select v-model="form.gender"
                                             class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10 focus:outline-none"
-                                            :class="{ 'border-red-700': errors.gender }">
+                                            :class="{ 'border-red-700': form.errors.gender }">
                                             <option value="selected" selected disabled>Select Option</option>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
@@ -98,8 +97,8 @@ const submitForm = async () => {
                                             </svg>
                                         </span>
                                     </div>
-                                    <div v-if="errors.gender" class="error">
-                                        <p class="text-sm text-red-700">{{ errors.gender[0] }}</p>
+                                    <div v-if="form.errors.gender" class="error">
+                                        <p class="text-sm text-red-700">{{ form.errors.gender[0] }}</p>
                                     </div>
                                 </div>
 
@@ -109,9 +108,9 @@ const submitForm = async () => {
                                     <div class="relative">
                                         <input v-model="form.date_of_birth" type="date" placeholder="Select date"
                                             class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10 focus:outline-none"
-                                            :class="{ 'border-red-700': errors.date_of_birth }" />
-                                        <div v-if="errors.date_of_birth" class="error">
-                                            <p class="text-sm text-red-700">{{ errors.date_of_birth[0] }}</p>
+                                            :class="{ 'border-red-700': form.errors.date_of_birth }" />
+                                        <div v-if="form.errors.date_of_birth" class="error">
+                                            <p class="text-sm text-red-700">{{ form.errors.date_of_birth[0] }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -121,9 +120,9 @@ const submitForm = async () => {
                                     <label class="mb-1.5 block text-sm font-medium text-gray-700">Address</label>
                                     <input v-model="form.address" type="text" placeholder="Enter Member Address"
                                         class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10 focus:outline-none"
-                                        :class="{ 'border-red-700': errors.address }" />
-                                    <div v-if="errors.address" class="error">
-                                        <p class="text-sm text-red-700">{{ errors.address[0] }}</p>
+                                        :class="{ 'border-red-700': form.errors.address }" />
+                                    <div v-if="form.errors.address" class="error">
+                                        <p class="text-sm text-red-700">{{ form.errors.address[0] }}</p>
                                     </div>
                                 </div>
 
@@ -132,10 +131,10 @@ const submitForm = async () => {
                                     <label class="mb-1.5 block text-sm font-medium text-gray-700">Notes</label>
                                     <textarea v-model="form.notes" placeholder="Enter any notes..." rows="5"
                                         class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10 focus:outline-none"
-                                        :class="{ 'border-red-700': errors.notes }">
+                                        :class="{ 'border-red-700': form.errors.notes }">
                                     </textarea>
-                                    <div v-if="errors.notes" class="error">
-                                        <p class="text-sm text-red-700">{{ errors.notes[0] }}</p>
+                                    <div v-if="form.errors.notes" class="error">
+                                        <p class="text-sm text-red-700">{{ form.errors.notes[0] }}</p>
                                     </div>
                                 </div>
 
@@ -153,9 +152,9 @@ const submitForm = async () => {
                                     <label class="mb-1.5 block text-sm font-medium text-gray-700">Email</label>
                                     <input v-model="form.email" type="text" placeholder="Enter Member Email"
                                         class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10 focus:outline-none"
-                                        :class="{ 'border-red-700': errors.email }" />
-                                    <div v-if="errors.email" class="error">
-                                        <p class="text-sm text-red-700">{{ errors.email[0] }}</p>
+                                        :class="{ 'border-red-700': form.errors.email }" />
+                                    <div v-if="form.errors.email" class="error">
+                                        <p class="text-sm text-red-700">{{ form.errors.email[0] }}</p>
                                     </div>
                                 </div>
 
@@ -165,9 +164,9 @@ const submitForm = async () => {
                                     <input v-model="form.phone_number" type="text"
                                         placeholder="Enter Member Phone Number"
                                         class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10 focus:outline-none"
-                                        :class="{ 'border-red-700': errors.phone_number }" />
-                                    <div v-if="errors.phone_number" class="error">
-                                        <p class="text-sm text-red-700">{{ errors.phone_number[0] }}</p>
+                                        :class="{ 'border-red-700': form.errors.phone_number }" />
+                                    <div v-if="form.errors.phone_number" class="error">
+                                        <p class="text-sm text-red-700">{{ form.errors.phone_number[0] }}</p>
                                     </div>
                                 </div>
 
