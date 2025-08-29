@@ -7,6 +7,7 @@ import HomeView from '@/views/HomeView.vue'
 import NewMemberView from '@/views/Members/NewMemberView.vue'
 import MembersView from '@/views/Members/MembersView.vue'
 import MemberView from '@/views/Members/MemberView.vue'
+import PlansView from '@/views/PlansView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,11 @@ const router = createRouter({
       path: '/members/:id',
       name: 'MemberView',
       component: MemberView,
+    },
+    {
+      path: '/plans',
+      name: 'plans',
+      component: PlansView,
     },
     {
       path: '/:pathMatch(.*)*',
