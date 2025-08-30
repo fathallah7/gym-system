@@ -55,7 +55,7 @@ const openEditModal = (plan) => {
 
 const closeModal = () => {
     showModal.value = false;
-    planData.errors = {};   
+    planData.errors = {};
 };
 
 const createOrUpdatePlan = async () => {
@@ -68,7 +68,6 @@ const createOrUpdatePlan = async () => {
             const response = await axios.post('/plans', planData);
             toast.success(response.data.message);
         }
-        isLoading.value = true;
         fetchPlans();
         closeModal();
     } catch (error) {
@@ -90,6 +89,9 @@ const deletePlan = async (id) => {
             fetchPlans();
         } catch (error) {
             toast.error('Failed to delete plan.');
+        }
+        finally {
+            isLoading.value = false;
         }
     }
 };
@@ -156,7 +158,7 @@ onMounted(() => {
                         </select>
                         <div v-if="planData.errors.type" class="text-red-600 text-sm mt-1">
                             {{ planData.errors.type[0] }}
-                            </div>
+                        </div>
                     </div>
 
                     <!-- Sessions -->
@@ -164,7 +166,8 @@ onMounted(() => {
                         <label class="block text-sm font-medium text-gray-700 mb-1">Sessions</label>
                         <input v-model.number="planData.sessions" type="number"
                             class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
-                            :class="{ 'border-red-500': planData.errors.sessions }" placeholder="Enter number of sessions" />
+                            :class="{ 'border-red-500': planData.errors.sessions }"
+                            placeholder="Enter number of sessions" />
                         <div v-if="planData.errors.sessions" class="text-red-600 text-sm mt-1">
                             {{ planData.errors.sessions[0] }}
                         </div>
@@ -193,7 +196,8 @@ onMounted(() => {
                     </div>
                 </div>
                 <div class="mt-8 flex justify-end gap-4">
-                    <button @click="closeModal"
+                    <button @click="closeModal" :disabled="isLoading"
+                        :class="{ 'opacity-50 cursor-not-allowed': isLoading }"
                         class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors">
                         Cancel
                     </button>
