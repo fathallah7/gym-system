@@ -83,7 +83,7 @@ onMounted(() => {
 
                     <Spinner v-if="isLoading" class="flex justify-center items-center" />
 
-                    <tr class="border-b border-gray-100 hover:bg-gray-100 transition-colors" v-for="member in members"
+                    <tr class="border-b border-gray-200 hover:bg-gray-100 transition-colors" v-for="member in members"
                         :key="member.id">
 
                         <td class="p-2 text-center bg-gray-100">
