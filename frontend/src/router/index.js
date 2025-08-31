@@ -8,6 +8,8 @@ import NewMemberView from '@/views/Members/NewMemberView.vue'
 import MembersView from '@/views/Members/MembersView.vue'
 import MemberView from '@/views/Members/MemberView.vue'
 import PlansView from '@/views/PlansView.vue'
+import MembershipsView from '@/views/Memberships/MembershipsView.vue'
+import NewMembershipView from '@/views/Memberships/NewMembershipView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +54,16 @@ const router = createRouter({
       path: '/members/:id',
       name: 'MemberView',
       component: MemberView,
+    },
+    {
+      path: '/memberships',
+      name: 'memberships',
+      component: MembershipsView,
+    },
+    {
+      path: '/new-membership',
+      name: 'new-membership',
+      component: NewMembershipView,
     },
     {
       path: '/plans',

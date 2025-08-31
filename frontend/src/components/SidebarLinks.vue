@@ -69,6 +69,23 @@ onMounted(() => {
                     </RouterLink>
                 </li>
 
+                <!-- Menu  Memberships -->
+                <li>
+                    <RouterLink to="memberships" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/memberships' }">
+                        <i class="fa-solid fa-id-card w-6 mr-2"></i>
+                        Memberships
+                    </RouterLink>
+                </li>
+                                <!-- Menu  Memberships -->
+                <li>
+                    <RouterLink to="new-membership" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/new-membership' }">
+                        <i class="fa-solid fa-file-circle-plus w-6 mr-2"></i>
+                        New Membership
+                    </RouterLink>
+                </li>
+
             </ul>
         </div>
 
