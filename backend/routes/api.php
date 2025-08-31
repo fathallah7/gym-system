@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PlanController;
 use Illuminate\Support\Facades\Route;
 
@@ -8,6 +9,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('/member', MemberController::class);
     Route::apiResource('/plans', PlanController::class);
+    Route::apiResource('/memberships', MembershipController::class);
 
 });
 
