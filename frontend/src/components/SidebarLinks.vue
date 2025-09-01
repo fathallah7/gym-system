@@ -28,11 +28,11 @@ onMounted(() => {
 <template>
 
     <nav class="flex-1 p-4 overflow-y-auto">
+        
         <!-- Menu Group -->
         <div>
             <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">Main Menu</h3>
             <ul class="space-y-2">
-
                 <!-- Menu Item Dashboard -->
                 <li>
                     <RouterLink to="home" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
@@ -51,15 +51,6 @@ onMounted(() => {
                     </RouterLink>
                 </li>
 
-                <!-- Menu New Member -->
-                <li>
-                    <RouterLink to="new-member" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/new-member' }">
-                        <i class="fa-solid fa-user-plus w-6 mr-2 text-gray-600"></i>
-                        New Member
-                    </RouterLink>
-                </li>
-
                 <!-- Menu  Members -->
                 <li>
                     <RouterLink to="members" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
@@ -71,21 +62,13 @@ onMounted(() => {
 
                 <!-- Menu  Memberships -->
                 <li>
-                    <RouterLink to="memberships" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                    <RouterLink to="memberships"
+                        class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                         :class="{ 'bg-gray-100 rounded-lg': $route.path === '/memberships' }">
                         <i class="fa-solid fa-id-card w-6 mr-2"></i>
                         Memberships
                     </RouterLink>
                 </li>
-                                <!-- Menu  Memberships -->
-                <li>
-                    <RouterLink to="new-membership" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/new-membership' }">
-                        <i class="fa-solid fa-file-circle-plus w-6 mr-2"></i>
-                        New Membership
-                    </RouterLink>
-                </li>
-
             </ul>
         </div>
 
@@ -93,8 +76,32 @@ onMounted(() => {
         <div class="mt-6">
             <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">Others</h3>
             <ul class="space-y-2">
+                <!-- New Member -->
+                <li>
+                    <RouterLink to="new-member" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/new-member' }">
+                        <i class="fa-solid fa-user-plus w-6 mr-2 text-gray-600"></i>
+                        New Member
+                    </RouterLink>
+                </li>
 
-                <!-- Menu Item Plans -->
+                <!-- New Membership -->
+                <li>
+                    <RouterLink to="new-membership"
+                        class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/new-membership' }">
+                        <i class="fa-solid fa-file-circle-plus w-6 mr-2"></i>
+                        New Membership
+                    </RouterLink>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Others Group -->
+        <div class="mt-6">
+            <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">Others</h3>
+            <ul class="space-y-2">
+                <!-- Item Plans -->
                 <li>
                     <RouterLink to="plans" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                         :class="{ 'bg-gray-100 rounded-lg': $route.path === '/plans' }">
@@ -103,7 +110,7 @@ onMounted(() => {
                     </RouterLink>
                 </li>
 
-                <!-- Menu Item Authentication -->
+                <!-- Item Authentication -->
                 <li>
                     <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
                         <svg class="w-6 h-6 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
