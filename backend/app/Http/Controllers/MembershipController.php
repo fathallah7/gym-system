@@ -55,7 +55,7 @@ class MembershipController extends Controller
                     'plan_id'    => $request->plan_id,
                     'start_date' => now(),
                     'end_date'   => now()->addDays($request->duration),
-                    'remaining_sessions' => $plan->sessions, 
+                    'remaining_sessions' => $plan->sessions,
                 ]);
 
                 $invoice = Invoice::create([
@@ -88,22 +88,28 @@ class MembershipController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Membership $membership)
     {
-        //
+        $request->validate([
+            'status'    => 'required|string|in:active,canceled,expired,frozen',
+        ]);
+        $membership->update($request->all());
+
+        return response()->json(['message' => 'Membership updated successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Membership $membership)
     {
-        //
+        $membership->delete();
+        return response()->json(['message' => 'Membership deleted successfully']);
     }
 }

@@ -7,8 +7,11 @@ import Spinner from '@/components/Spinner.vue';
 
 const isLoading = ref(false);
 const toast = useToast();
+const showModal = ref(false);
 
 const memberships = ref();
+const membershipStatusData = ref();
+const memberID = ref();
 
 const fetchMemberships = async () => {
     try {
@@ -24,6 +27,44 @@ const fetchMemberships = async () => {
     }
 };
 
+const memberUpdateStatus = async () => {
+    try {
+        await axios.put(`/memberships/${memberID.value}`, {
+            status: membershipStatusData.value,
+        });
+        toast.success('Membership status updated successfully.');
+        fetchMemberships();
+        isLoading.value = false;
+        closeModal();
+    } catch (error) {
+        console.log(error);
+        toast.error('Failed to update membership status.');
+    }
+};
+
+const deleteMembership = async (id) => {
+    if (confirm('Are You Sure For Delete This Membership')) {
+        try {
+            await axios.delete(`/memberships/${id}`);
+            toast.success('Membership deleted successfully.');
+            fetchMemberships();
+            isLoading.value = false;
+        } catch (error) {
+            console.log(error);
+            toast.error('Failed to delete membership.');
+        }
+    }
+}
+
+const openEditModal = (member) => {
+    showModal.value = true;
+    membershipStatusData.value = member.status;
+    memberID.value = member.id;
+};
+
+const closeModal = () => {
+    showModal.value = false;
+};
 
 onMounted(() => {
     fetchMemberships();
@@ -51,6 +92,52 @@ onMounted(() => {
                 class="relative bg-gray-800 text-white px-6 py-2 rounded-md font-medium shadow-md hover:shadow-lg hover:bg-black focus:outline-none focus:ring-2 focus:ring-bronze-400 transition-all duration-200 hover:bg-gradient-to-r cursor-pointer">
                 Make Membership
             </RouterLink>
+        </div>
+
+        <!-- Modal -->
+        <div v-if="showModal"
+            class="fixed inset-0 bg-black/50 bg-opacity-60 flex items-center justify-center z-50 transition-opacity duration-300"
+            :class="{ 'opacity-100': showModal, 'opacity-0': !showModal }">
+            <div
+                class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-100">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800">Edit Status
+                    </h2>
+                    <button @click="closeModal" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="space-y-5">
+                    <!-- Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select name="type" id="type"
+                            class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+                            v-model="membershipStatusData">
+                            <option value="" disabled>Select plan type</option>
+                            <option value="active">Active</option>
+                            <option value="expired">Expired</option>
+                            <option value="canceled">Canceled</option>
+                            <option value="frozen">Frozen</option>
+                        </select>
+                        <!-- <div v-if="planData.errors.type" class="text-red-600 text-sm mt-1">
+                            {{ planData.errors.type[0] }}
+                        </div> -->
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end gap-4">
+                    <button @click="closeModal" :disabled="isLoading"
+                        :class="{ 'opacity-50 cursor-not-allowed': isLoading }"
+                        class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors">
+                        Cancel
+                    </button>
+                    <button @click="memberUpdateStatus" :disabled="isLoading"
+                        :class="{ 'opacity-50 cursor-not-allowed': isLoading }"
+                        class="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                        {{ isEditMode ? 'Update' : 'Create' }}
+                    </button>
+                </div>
+            </div>
         </div>
 
         <Spinner v-if="isLoading" class="flex justify-center items-center" />
@@ -106,11 +193,11 @@ onMounted(() => {
                                 {{ member.status }}</p>
                         </td>
                         <td class="p-4">
-                            <button
+                            <button @click="openEditModal(member)"
                                 class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button
+                            <button @click="deleteMembership(member.id)"
                                 class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
