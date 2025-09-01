@@ -61,10 +61,15 @@ onMounted(() => {
 
     <div class="p-6 overflow-x-auto mx-auto max-w-8xl">
         <!-- Search Bar -->
-        <div class="mb-6 flex items-center gap-4">
+        <div class="mb-6 flex items-center justify-between gap-4">
             <input type="text" placeholder="Search projects..."
                 class="w-full max-w-md rounded-lg border border-gray-400 px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                 aria-label="Search projects" />
+
+            <RouterLink to="/new-member"
+                class="relative bg-gray-800 text-white px-6 py-2 rounded-md font-medium shadow-md hover:shadow-lg hover:bg-black focus:outline-none focus:ring-2 focus:ring-bronze-400 transition-all duration-200 hover:bg-gradient-to-r cursor-pointer">
+                Add New Member
+            </RouterLink>
         </div>
         <!-- Table -->
         <div class="overflow-hidden rounded-xl shadow-sm bg-white">

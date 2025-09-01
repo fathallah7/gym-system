@@ -26,7 +26,7 @@ const fetchMemberships = async () => {
 
 
 onMounted(() => {
-    fetchMemberships();       
+    fetchMemberships();
 });
 </script>
 
@@ -40,16 +40,20 @@ onMounted(() => {
     </header>
 
     <div class="p-6 overflow-x-auto mx-auto max-w-8xl">
-        <Spinner v-if="isLoading" class="flex justify-center items-center" />
 
         <!-- Search Bar -->
-        <div class="mb-3 flex items-center justify-end gap-4" v-if="!isLoading">
-            <button
+        <div class="mb-3 flex items-center justify-between gap-4">
+            <input type="text" placeholder="Search projects..."
+                class="w-full max-w-md rounded-lg border border-gray-400 px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                aria-label="Search projects" />
+
+            <RouterLink to="/new-membership"
                 class="relative bg-gray-800 text-white px-6 py-2 rounded-md font-medium shadow-md hover:shadow-lg hover:bg-black focus:outline-none focus:ring-2 focus:ring-bronze-400 transition-all duration-200 hover:bg-gradient-to-r cursor-pointer">
                 Make Membership
-            </button>
+            </RouterLink>
         </div>
 
+        <Spinner v-if="isLoading" class="flex justify-center items-center" />
         <!-- Table -->
         <div class="overflow-hidden rounded-xl shadow-sm bg-white" v-if="!isLoading">
             <table class="w-full table-auto text-left">
@@ -65,8 +69,8 @@ onMounted(() => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b border-gray-100 hover:bg-gray-100 transition-colors" v-for="member in memberships"
-                        :key="member.id">
+                    <tr class="border-b border-gray-100 hover:bg-gray-100 transition-colors"
+                        v-for="member in memberships" :key="member.id">
                         <td class="p-2 text-center bg-gray-100">
                             <p class="text-sm text-gray-900">{{ member.id }}</p>
                         </td>
@@ -92,20 +96,21 @@ onMounted(() => {
                             </div>
                         </td>
                         <td class="p-4">
-                            <span
-                                class="inline-block rounded-md ">
+                            <span class="inline-block rounded-md ">
                                 {{ member.end_date }}
                             </span>
                         </td>
                         <td class="p-4">
-                            <p class="text-gray-900 inline-block rounded-md px-2 py-1 text-xs font-semibold uppercase" :class="{'bg-red-100 text-red-700': member.status === 'expired' , 'bg-green-100 text-green-700 ': member.status === 'active' , 'bg-yellow-100 text-yellow-700': member.status === 'frozen'}">{{ member.status }}</p>
+                            <p class="text-gray-900 inline-block rounded-md px-2 py-1 text-xs font-semibold uppercase"
+                                :class="{ 'bg-red-100 text-red-700': member.status === 'expired', 'bg-green-100 text-green-700 ': member.status === 'active', 'bg-yellow-100 text-yellow-700': member.status === 'frozen' }">
+                                {{ member.status }}</p>
                         </td>
                         <td class="p-4">
-                            <button 
+                            <button
                                 class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button 
+                            <button
                                 class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
@@ -126,4 +131,4 @@ onMounted(() => {
 .scale-0 {
     transform: scale(0.95);
 }
-</style> 
+</style>
