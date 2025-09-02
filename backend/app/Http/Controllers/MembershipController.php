@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MembershipRequest;
 use App\Mail\PaymentInvoiceMail;
 use App\Models\Invoice;
 use App\Models\Member;
@@ -26,24 +27,10 @@ class MembershipController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MembershipRequest $request)
     {
 
-        $request->validate([
-            // membership
-            'member_id' => 'required|exists:members,id',
-            'plan_id'   => 'required|exists:plans,id',
-            'duration'  => 'required|integer|min:1',
-
-            // payment
-            'amount'    => 'required|numeric|min:0',
-            'payment_method' => 'required|string|in:cash,other',
-            'note' => 'nullable|string|max:255',
-
-            // invoice
-            'total_amount'   => 'required|numeric|min:0',
-            'status'        => 'required|string|in:paid,unpaid,partial,canceled',
-        ]);
+        $request->validated();
 
         try {
             DB::transaction(function () use ($request) {
