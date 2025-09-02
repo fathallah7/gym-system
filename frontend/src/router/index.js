@@ -10,6 +10,7 @@ import MemberView from '@/views/Members/MemberView.vue'
 import PlansView from '@/views/PlansView.vue'
 import MembershipsView from '@/views/Memberships/MembershipsView.vue'
 import NewMembershipView from '@/views/Memberships/NewMembershipView.vue'
+import InvoicesView from '@/views/InvoicesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,21 +55,31 @@ const router = createRouter({
       path: '/members/:id',
       name: 'MemberView',
       component: MemberView,
+      meta: { layout: 'AppLayout', requiresAuth: true },
     },
     {
       path: '/memberships',
       name: 'memberships',
       component: MembershipsView,
+      meta: { layout: 'AppLayout', requiresAuth: true },
     },
     {
       path: '/new-membership',
       name: 'new-membership',
       component: NewMembershipView,
+      meta: { layout: 'AppLayout', requiresAuth: true },
     },
     {
       path: '/plans',
       name: 'plans',
       component: PlansView,
+      meta: { layout: 'AppLayout', requiresAuth: true },
+    },
+    {
+      path: '/invoices',
+      name: 'invoices',
+      component: InvoicesView,
+      meta: { layout: 'AppLayout', requiresAuth: true },
     },
     {
       path: '/:pathMatch(.*)*',

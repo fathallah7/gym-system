@@ -110,6 +110,15 @@ onMounted(() => {
                     </RouterLink>
                 </li>
 
+                <!-- Item Invoices -->
+                <li>
+                    <RouterLink to="invoices" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/invoices' }">
+                        <i class="fa-solid fa-credit-card w-6 mr-2 text-gray-600"></i>
+                        Payments & Invoices
+                    </RouterLink>
+                </li>
+
                 <!-- Item Authentication -->
                 <li>
                     <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
