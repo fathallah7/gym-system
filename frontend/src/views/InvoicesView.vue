@@ -13,8 +13,12 @@ const selectedInvoiceData = ref(null);
 
 const invoices = ref([]);
 
-
-
+const updateData = ref({
+    amount: '',
+    payment_method: '',
+    status: '',
+    errors: {}
+});
 
 const fetchInvoices = async () => {
     try {
@@ -35,7 +39,25 @@ const openPartialModal = (data) => {
 };
 
 const closeModal = () => {
+    updateData.value.errors = {};
     showPartialModal.value = false;
+};
+
+const update = async () => {
+    try {
+        updateData.value.errors = {};
+        const response = await axios.put(`/invoices/${selectedInvoiceData.value.id}`, updateData.value);
+        toast.success('Payment added successfully!');
+        fetchInvoices();
+        closeModal();
+    } catch (error) {
+        console.log(error);
+        if (error.response && error.response.status === 422) {
+            updateData.value.errors = error.response.data.errors;
+        }
+    } finally {
+        isLoading.value = false;
+    }
 };
 
 onMounted(() => {
@@ -95,33 +117,41 @@ onMounted(() => {
                     </table>
                 </div>
                 <p class="font-bold text-red-900">Total Needed : {{ selectedInvoiceData.total_amount }}</p>
-                <!-- Sessions -->
+                <!-- Amount -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Pay Amount</label>
-                    <input type="number"
+                    <input type="number" v-model="updateData.amount"
                         class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
-                        placeholder="Enter The amount" />
+                        :class="{ 'border-red-500': updateData.errors.amount }" placeholder="Enter The amount" />
+                    <p v-if="updateData.errors.amount" class="text-red-500 text-sm mt-1">{{ updateData.errors.amount[0]
+                        }}</p>
                 </div>
                 <!-- Payment Method -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Method</label>
-                    <select name="type" id="type"
-                        class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">
-                        <option value="" disabled selected>Select Invoice Status</option>
+                    <select name="type" id="type" v-model="updateData.payment_method"
+                        class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+                        :class="{ 'border-red-500': updateData.errors.payment_method }">
+                        <option value="" disabled selected>Select Payment Method</option>
                         <option value="cash">Cash</option>
-                        <option value="other">Partial</option>
+                        <option value="other">Other</option>
                     </select>
+                    <p v-if="updateData.errors.payment_method" class="text-red-500 text-sm mt-1">{{
+                        updateData.errors.payment_method[0] }}</p>
                 </div>
                 <!-- Status -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                    <select name="type" id="type"
-                        class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">
+                    <select name="type" id="type" v-model="updateData.status"
+                        class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+                        :class="{ 'border-red-500': updateData.errors.status }">
                         <option value="" disabled selected>Select Invoice Status</option>
                         <option value="paid">Paid</option>
                         <option value="partial">Partial</option>
                         <option value="canceled">Canceled</option>
                     </select>
+                    <p v-if="updateData.errors.status" class="text-red-500 text-sm mt-1">{{ updateData.errors.status[0]
+                        }}</p>
                 </div>
             </div>
             <div class="mt-4 flex justify-end gap-4">
@@ -130,8 +160,7 @@ onMounted(() => {
                     class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors">
                     Cancel
                 </button>
-                <button @click="createOrUpdatePlan" :disabled="isLoading"
-                    :class="{ 'opacity-50 cursor-not-allowed': isLoading }"
+                <button @click="update" :disabled="isLoading" :class="{ 'opacity-50 cursor-not-allowed': isLoading }"
                     class="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                     Add
                 </button>
