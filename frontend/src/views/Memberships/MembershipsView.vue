@@ -171,7 +171,7 @@ onMounted(() => {
                         <td class="p-4">
                             <div class="flex items-center gap-3">
                                 <div class="flex flex-col">
-                                    <p class="text-sm font-medium text-gray-900">{{ member.plan.name }}</p>
+                                    <p class="text-sm font-medium text-gray-900">{{ member.plan?.name }}</p>
                                 </div>
                             </div>
                         </td>

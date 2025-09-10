@@ -117,7 +117,7 @@ const renderCharts = () => {
     new Chart(plansChartRef.value, {
         type: 'doughnut',
         data: {
-            labels: data.value.charts.subscriptions_by_plan.map(item => item.plan.name),
+            labels: data.value.charts.subscriptions_by_plan.map(item => item.plan?.name),
             datasets: [{
                 label: 'Subscriptions by Plan',
                 data: data.value.charts.subscriptions_by_plan.map(item => item.count),
