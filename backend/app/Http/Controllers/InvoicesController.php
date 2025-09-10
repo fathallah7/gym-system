@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PaymentInvoiceMail;
 use App\Models\Invoice;
 use App\Models\Payment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class InvoicesController extends Controller
 {
@@ -15,8 +17,8 @@ class InvoicesController extends Controller
     public function index()
     {
         $invoices = Invoice::with('membership.member', 'payments')
-                                ->withSum('payments', 'amount')
-                                    ->get()->sortByDesc('id');
+            ->withSum('payments', 'amount')
+            ->get()->sortByDesc('id');
         return response()->json($invoices);
     }
 
@@ -47,9 +49,9 @@ class InvoicesController extends Controller
             'status' => 'required|in:paid,partial,canceled',
             'payment_method' => 'required|string|in:cash,other',
         ]);
-        
+
         try {
-            DB::transaction(function () use ($request , $invoice) {
+            DB::transaction(function () use ($request, $invoice) {
 
                 $invoice->update([
                     'status' => $request->status,
@@ -61,6 +63,9 @@ class InvoicesController extends Controller
                     'invoice_id' => $invoice->id
                 ]);
 
+                if ($invoice->membership->member->email) {
+                    Mail::to($invoice->membership->member->email)->send(new PaymentInvoiceMail($invoice));
+                }
             });
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to update invoice'], 500);

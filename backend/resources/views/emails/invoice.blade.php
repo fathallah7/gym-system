@@ -61,6 +61,12 @@
             color: #4F46E5;
         }
 
+        .totalpayed {
+            font-size: 18px;
+            font-weight: bold;
+            color: green;
+        }
+
         .footer {
             padding: 15px;
             text-align: center;
@@ -99,6 +105,10 @@
                 <tr>
                     <th>Total Amount</th>
                     <td class="total">{{ number_format($invoice->total_amount, 2) }} EGP</td>
+                </tr>
+                <tr>
+                    <th>Payed</th>
+                    <td class="totalpayed">{{ number_format($invoice->payments->sum('amount'), 2) }} EGP</td>
                 </tr>
                 <tr>
                     <th>Status</th>
