@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\MemberController;
@@ -17,7 +18,9 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::apiResource('/invoices', InvoicesController::class);
 
-    Route::get('/dashboard' , [DashboardController::class , 'index']);
+    Route::get('/dashboard' , [DashboardController::class , 'index']);  
+
+    Route::put('/memberships/{membership}/attendance', [AttendancesController::class, 'update']);
 
 });
 

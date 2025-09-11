@@ -56,6 +56,18 @@ const deleteMembership = async (id) => {
     }
 }
 
+const attendance = async (id , name) => {
+    try {
+        await axios.put(`/memberships/${id}/attendance`);
+        toast.success(`Attendance recorded successfully for ${name}.`);
+        fetchMemberships();
+        isLoading.value = false;
+    } catch (error) {
+        console.log(error);
+        toast.error(`Failed to record attendance for ${name}.`);
+    }
+};
+
 const openEditModal = (member) => {
     showModal.value = true;
     membershipStatusData.value = member.status;
@@ -178,7 +190,9 @@ onMounted(() => {
                         <td class="p-4">
                             <div class="flex items-center gap-3">
                                 <div class="flex flex-col">
-                                    <p class="text-sm font-medium text-gray-900">{{ member.remaining_sessions }}</p>
+                                    <p class="text-sm font-medium text-gray-900" :class="{ 'text-red-600': member.remaining_sessions === 0 }">
+                                        {{ member.remaining_sessions }}
+                                    </p>
                                 </div>
                             </div>
                         </td>
@@ -193,6 +207,10 @@ onMounted(() => {
                                 {{ member.status }}</p>
                         </td>
                         <td class="p-4">
+                            <button @click="attendance(member.id , member.member.name)"
+                                class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                                <i class="fa-solid fa-square-check"></i>
+                            </button>
                             <button @click="openEditModal(member)"
                                 class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                                 <i class="fa-solid fa-pen-to-square"></i>
