@@ -20,7 +20,7 @@ class MembershipController extends Controller
      */
     public function index()
     {
-        $memberships = Membership::with(['member', 'plan'])->get();
+        $memberships = Membership::with(['member', 'plan'])->paginate(perPage: 15);
         return response()->json($memberships);
     }
 

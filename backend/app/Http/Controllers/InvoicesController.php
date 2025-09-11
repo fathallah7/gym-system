@@ -18,7 +18,7 @@ class InvoicesController extends Controller
     {
         $invoices = Invoice::with('membership.member', 'payments')
             ->withSum('payments', 'amount')
-            ->get()->sortByDesc('id');
+            ->paginate(15);
         return response()->json($invoices);
     }
 

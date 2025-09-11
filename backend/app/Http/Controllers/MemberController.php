@@ -13,7 +13,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = Member::with('memberships')->get();
+        $members = Member::with('memberships')->paginate(15);
         return response()->json($members);
     }
 

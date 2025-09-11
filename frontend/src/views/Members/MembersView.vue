@@ -4,18 +4,33 @@ import axios from 'axios';
 import { onMounted } from 'vue';
 import { useToast } from 'vue-toastification';
 import Spinner from '@/components/Spinner.vue';
+import Pagination from '@/components/Pagination.vue';
 
 const isLoading = ref(false);
 
 const toast = useToast();
 
-const members = ref([]);
+const members = ref();
+const meta = ref({});
 
-const fetchMembers = async () => {
+const fetchMembers = async (page) => {
     try {
         isLoading.value = true;
-        const response = await axios.get('/member');
-        members.value = response.data;
+        const response = await axios.get('/member', {
+            params: {
+                page: page
+            }
+        });
+        members.value = response.data.data;
+        if (response.data.meta) {
+            meta.value = response.data.meta;
+        } else {
+            meta.value = {
+                current_page: response.data.current_page,
+                last_page: response.data.last_page,
+                total: response.data.total,
+            };
+        }
         console.log('Members fetched successfully:', members.value);
     } catch (error) {
         console.log(error);
@@ -37,7 +52,7 @@ const deleteMember = async ($id) => {
 };
 
 onMounted(() => {
-    fetchMembers();
+    fetchMembers(1);
 });
 
 </script>
@@ -71,10 +86,13 @@ onMounted(() => {
                 Add New Member
             </RouterLink>
         </div>
+
+        <Spinner v-if="isLoading" class="flex justify-center items-center" />
+
         <!-- Table -->
-        <div class="overflow-hidden rounded-xl shadow-sm bg-white">
+        <div class="overflow-hidden rounded-xl shadow-sm bg-white" v-if="!isLoading">
             <table class="w-full table-auto text-left">
-                <thead class="bg-gray-100" v-if="!isLoading">
+                <thead class="bg-gray-100">
                     <tr>
                         <th class="px-4 py-2 text-sm font-medium text-gray-700 text-center">ID</th>
                         <th class="px-6 py-4 text-sm font-medium text-gray-700">Member</th>
@@ -85,8 +103,6 @@ onMounted(() => {
                     </tr>
                 </thead>
                 <tbody>
-
-                    <Spinner v-if="isLoading" class="flex justify-center items-center" />
 
                     <tr class="border-b border-gray-200 hover:bg-gray-100 transition-colors" v-for="member in members"
                         :key="member.id">
@@ -148,6 +164,7 @@ onMounted(() => {
 
     </div>
 
+    <Pagination v-if="meta && meta.last_page" :meta="meta" @page-changed="fetchMembers" />
 
 
 </template>

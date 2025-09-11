@@ -4,6 +4,7 @@ import axios from 'axios';
 import { onMounted } from 'vue';
 import { useToast } from 'vue-toastification';
 import Spinner from '@/components/Spinner.vue';
+import Pagination from '@/components/Pagination.vue';
 
 const isLoading = ref(false);
 const toast = useToast();
@@ -12,6 +13,7 @@ const showPartialModal = ref(false);
 const selectedInvoiceData = ref(null);
 
 const invoices = ref([]);
+const meta = ref({})
 
 const updateData = ref({
     amount: '',
@@ -20,11 +22,24 @@ const updateData = ref({
     errors: {}
 });
 
-const fetchInvoices = async () => {
+const fetchInvoices = async (page) => {
     try {
         isLoading.value = true;
-        const response = await axios.get('/invoices');
-        invoices.value = response.data;
+        const response = await axios.get('/invoices', {
+            params: {
+                page: page
+            }
+        });
+        invoices.value = response.data.data;
+        if (response.data.meta) {
+            meta.value = response.data.meta;
+        } else {
+            meta.value = {
+                current_page: response.data.current_page,
+                last_page: response.data.last_page,
+                total: response.data.total,
+            };
+        }
         console.log('invoices fetched successfully:', invoices.value);
     } catch (error) {
         console.log(error);
@@ -61,7 +76,7 @@ const update = async () => {
 };
 
 onMounted(() => {
-    fetchInvoices();
+    fetchInvoices(1);
 });
 
 </script>
@@ -177,9 +192,9 @@ onMounted(() => {
                 aria-label="Search projects" />
         </div>
         <!-- Table -->
-        <div class="overflow-hidden rounded-xl shadow-sm bg-white">
+        <div class="overflow-hidden rounded-xl shadow-sm bg-white" v-if="!isLoading">
             <table class="w-full table-auto text-left">
-                <thead class="bg-gray-100" v-if="!isLoading">
+                <thead class="bg-gray-100">
                     <tr>
                         <th class="px-4 py-2 text-sm font-medium text-gray-700 text-center">Number</th>
                         <th class="px-6 py-4 text-sm font-medium text-gray-700">Total</th>
@@ -264,6 +279,7 @@ onMounted(() => {
 
     </div>
 
+    <Pagination v-if="meta && meta.last_page" :meta="meta" @page-changed="fetchInvoices" />
 
 </template>
 
