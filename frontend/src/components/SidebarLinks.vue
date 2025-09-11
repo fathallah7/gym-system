@@ -136,7 +136,7 @@ onMounted(() => {
             </ul>
         </div>
 
-        <div class="mt-6 border-t border-gray-300 pt-4">
+        <div class="mt-5 border-t border-gray-300 pt-4">
             <ul>
                 <li>
                     <RouterLink to="/login" @click.prevent="logout"
