@@ -42,12 +42,13 @@ onMounted(() => {
                     </RouterLink>
                 </li>
 
-                <!-- Menu Item Calendar -->
+                <!-- Menu  Memberships -->
                 <li>
-                    <RouterLink to="calendar" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/calendar' }">
-                        <i class="fa-solid fa-square-check w-6 mr-2 text-gray-600"></i>
-                        Attendance
+                    <RouterLink to="memberships"
+                        class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/memberships' }">
+                        <i class="fa-solid fa-id-card w-6 mr-2"></i>
+                        Memberships
                     </RouterLink>
                 </li>
 
@@ -59,22 +60,12 @@ onMounted(() => {
                         Members
                     </RouterLink>
                 </li>
-
-                <!-- Menu  Memberships -->
-                <li>
-                    <RouterLink to="memberships"
-                        class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-                        :class="{ 'bg-gray-100 rounded-lg': $route.path === '/memberships' }">
-                        <i class="fa-solid fa-id-card w-6 mr-2"></i>
-                        Memberships
-                    </RouterLink>
-                </li>
             </ul>
         </div>
 
         <!-- Others Group -->
-        <div class="mt-6">
-            <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">Others</h3>
+        <div class="mt-5">
+            <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">Memberships</h3>
             <ul class="space-y-2">
                 <!-- New Member -->
                 <li>
@@ -98,8 +89,8 @@ onMounted(() => {
         </div>
 
         <!-- Others Group -->
-        <div class="mt-6">
-            <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">Others</h3>
+        <div class="mt-5">
+            <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">System</h3>
             <ul class="space-y-2">
                 <!-- Item Plans -->
                 <li>
@@ -120,7 +111,7 @@ onMounted(() => {
                 </li>
 
                 <!-- Item Authentication -->
-                <li>
+                <!-- <li>
                     <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
                         <svg class="w-6 h-6 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -141,12 +132,11 @@ onMounted(() => {
                         <li><a href="#" class="block p-2 text-gray-600 hover:bg-gray-100 rounded-lg">Sign
                                 Up</a></li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </div>
 
-        <div class="mt-6">
-            <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">Others</h3>
+        <div class="mt-6 border-t border-gray-300 pt-4">
             <ul>
                 <li>
                     <RouterLink to="/login" @click.prevent="logout"
