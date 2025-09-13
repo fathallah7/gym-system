@@ -122,7 +122,8 @@ onMounted(() => {
 
         <!-- Modal -->
         <EditModal v-if="showModal" :showModal="showModal" :isLoading="isLoading" @close-modal="closeModal"
-            @member-update-status="memberUpdateStatus" v-model:membershipStatusData="membershipStatusData" />
+            @member-update-status="memberUpdateStatus" :membershipStatusData="membershipStatusData"
+            @update:membershipStatusData="val => membershipStatusData = val" />
     </div>
 
     <!-- Pagination -->
