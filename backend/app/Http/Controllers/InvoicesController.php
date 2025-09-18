@@ -14,11 +14,22 @@ class InvoicesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::with('membership.member', 'payments')
-            ->withSum('payments', 'amount')
-            ->paginate(15);
+        $query = Invoice::with('membership.member', 'payments')
+            ->withSum('payments', 'amount');
+
+        if ($search = $request->query('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('number', 'like', "%{$search}%")
+                    ->orWhereHas('membership.member', function ($im) use ($search) {
+                        $im->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $invoices = $query->paginate(15);
+
         return response()->json($invoices);
     }
 

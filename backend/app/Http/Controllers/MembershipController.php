@@ -18,9 +18,21 @@ class MembershipController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $memberships = Membership::with(['member', 'plan'])->paginate(perPage: 15);
+        $query = Membership::with(['member', 'plan']);
+
+        if ($search = $request->query('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('id', 'like', "%{$search}%")
+                    ->orWhereHas('member', function ($mq) use ($search) {
+                        $mq->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $memberships = $query->paginate(15);
+
         return response()->json($memberships);
     }
 
@@ -73,10 +85,7 @@ class MembershipController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        
-    }
+    public function show(string $id) {}
 
     /**
      * Update the specified resource in storage.
