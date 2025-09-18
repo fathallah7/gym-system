@@ -8,72 +8,22 @@ const isLoading = ref(true);
 const data = ref(null);
 
 const membershipCards = [
-    {
-        title: "Members",
-        valueKey: "total_members",
-        icon: "fa-users",
-        color: "bg-blue-500",
-    },
-    {
-        title: "Memberships",
-        valueKey: "total_memberships",
-        icon: "fa-id-card",
-        color: "bg-green-500",
-    },
-    {
-        title: "Active Memberships",
-        valueKey: "total_active_memberships",
-        icon: "fa-check-circle",
-        color: "bg-green-700",
-    },
-    {
-        title: "Expired Memberships",
-        valueKey: "total_expired_memberships",
-        icon: "fa-exclamation-circle",
-        color: "bg-red-700",
-    },
-    {
-        title: "Canceled Memberships",
-        valueKey: "total_canceled_memberships",
-        icon: "fa-times-circle",
-        color: "bg-yellow-500",
-    },
-    {
-        title: "Frozen Memberships",
-        valueKey: "total_frozen_memberships",
-        icon: "fa-stopwatch",
-        color: "bg-blue-400",
-    },
+    { title: "Members", valueKey: "total_members", icon: "fa-users", color: "bg-indigo-600" },
+    { title: "Memberships", valueKey: "total_memberships", icon: "fa-id-card", color: "bg-teal-500" },
+    { title: "Active Memberships", valueKey: "total_active_memberships", icon: "fa-check-circle", color: "bg-emerald-500" },
+    { title: "Expired Memberships", valueKey: "total_expired_memberships", icon: "fa-exclamation-circle", color: "bg-rose-500" },
+    { title: "Canceled Memberships", valueKey: "total_canceled_memberships", icon: "fa-times-circle", color: "bg-amber-500" },
+    { title: "Frozen Memberships", valueKey: "total_frozen_memberships", icon: "fa-stopwatch", color: "bg-cyan-500" },
 ];
 
 const paymentCards = [
-    {
-        title: "Payments Amount",
-        valueKey: "total_payments_amount",
-        icon: "fa-dollar-sign",
-        color: "bg-green-600",
-    },
+    { title: "Payments Amount", valueKey: "total_payments_amount", icon: "fa-dollar-sign", color: "bg-emerald-600" },
 ];
 
 const invoiceCards = [
-    {
-        title: "Paid Invoices",
-        valueKey: "total_paid_invoices",
-        icon: "fa-file-invoice-dollar",
-        color: "bg-gray-500",
-    },
-    {
-        title: "Unpaid Invoices",
-        valueKey: "total_unpaid_invoices",
-        icon: "fa-file-invoice",
-        color: "bg-red-500",
-    },
-    {
-        title: "Partial Invoices",
-        valueKey: "total_partial_invoices",
-        icon: "fa-file-invoice",
-        color: "bg-orange-500",
-    },
+    { title: "Paid Invoices", valueKey: "total_paid_invoices", icon: "fa-file-invoice-dollar", color: "bg-gray-600" },
+    { title: "Unpaid Invoices", valueKey: "total_unpaid_invoices", icon: "fa-file-invoice", color: "bg-red-600" },
+    { title: "Partial Invoices", valueKey: "total_partial_invoices", icon: "fa-file-invoice", color: "bg-orange-600" },
 ];
 
 const revenueChartRef = ref(null);
@@ -170,29 +120,29 @@ onMounted(() => {
 
 
 
-    <div v-if="isLoading" class="flex justify-center items-center h-64">
-        <Spinner />
-    </div>
+    <!-- Loading Spinner -->
+    <Spinner v-if="isLoading" class="flex justify-center items-center" />
 
-    <div v-if="!isLoading" class="mx-4 sm:mx-8 mt-8 mb-12">
+    <div class="mx-4 sm:mx-8 mt-8 mb-12">
+
         <!-- Membership Metrics Section -->
         <section class="mb-12">
-            <h2 class="text-xl font-bold text- mb-6 tracking-tight border-b-2 border- pb-2">
-                Membership Metrics</h2>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6 border-b-2 border-indigo-100 pb-3">Membership Metrics
+            </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="(card, index) in membershipCards" :key="index"
-                    class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 backdrop-blur-sm bg-opacity-95 relative overflow-hidden group">
+                    class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden group">
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from- to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        class="absolute inset-0 bg-gradient-to-br from-indigo-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
                     <div class="flex items-center space-x-4 relative z-10">
-                        <div class="p-3 rounded-full transition-transform duration-300 group-hover:scale-105"
+                        <div class="p-4 rounded-full transition-transform duration-300 group-hover:scale-110"
                             :class="card.color">
-                            <i :class="`fa-solid ${card.icon} text-white text-xl`"></i>
+                            <i :class="`fa-solid ${card.icon} text-white text-2xl`"></i>
                         </div>
                         <div>
-                            <h3 class="text-sm font-medium text-gray-600 font-sans tracking-wide">{{ card?.title }}</h3>
-                            <p class="text-2xl font-bold text-">{{ data?.cards[card.valueKey] }}</p>
+                            <h3 class="text-sm font-medium text-gray-600 tracking-wide">{{ card.title }}</h3>
+                            <p class="text-3xl font-bold text-gray-900">{{ data?.cards[card.valueKey] }}</p>
                         </div>
                     </div>
                 </div>
@@ -201,22 +151,21 @@ onMounted(() => {
 
         <!-- Payment Metrics Section -->
         <section class="mb-12">
-            <h2 class="text-xl font-bold text- mb-6 tracking-tight border-b-2 border- pb-2">
-                Payment Metrics</h2>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6 border-b-2 border-indigo-100 pb-3">Payment Metrics</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="(card, index) in paymentCards" :key="index"
-                    class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 backdrop-blur-sm bg-opacity-95 relative overflow-hidden group">
+                    class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden group">
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from- to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        class="absolute inset-0 bg-gradient-to-br from-indigo-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
                     <div class="flex items-center space-x-4 relative z-10">
-                        <div class="p-3 rounded-full transition-transform duration-300 group-hover:scale-105"
+                        <div class="p-4 rounded-full transition-transform duration-300 group-hover:scale-110"
                             :class="card.color">
-                            <i :class="`fa-solid ${card.icon} text-white text-xl`"></i>
+                            <i :class="`fa-solid ${card.icon} text-white text-2xl`"></i>
                         </div>
                         <div>
-                            <h3 class="text-sm font-medium text-gray-600 font-sans tracking-wide">{{ card?.title }}</h3>
-                            <p class="text-2xl font-bold text-">{{ data?.cards[card.valueKey] }}</p>
+                            <h3 class="text-sm font-medium text-gray-600 tracking-wide">{{ card.title }}</h3>
+                            <p class="text-3xl font-bold text-gray-900">{{ data?.cards[card.valueKey] }}</p>
                         </div>
                     </div>
                 </div>
@@ -225,254 +174,230 @@ onMounted(() => {
 
         <!-- Invoice Metrics Section -->
         <section class="mb-12">
-            <h2 class="text-xl font-bold text- mb-6 tracking-tight border-b-2 border- pb-2">
-                Invoice Metrics</h2>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6 border-b-2 border-indigo-100 pb-3">Invoice Metrics</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="(card, index) in invoiceCards" :key="index"
-                    class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 backdrop-blur-sm bg-opacity-95 relative overflow-hidden group">
+                    class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden group">
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from- to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        class="absolute inset-0 bg-gradient-to-br from-indigo-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
                     <div class="flex items-center space-x-4 relative z-10">
-                        <div class="p-3 rounded-full transition-transform duration-300 group-hover:scale-105"
+                        <div class="p-4 rounded-full transition-transform duration-300 group-hover:scale-110"
                             :class="card.color">
-                            <i :class="`fa-solid ${card.icon} text-white text-xl`"></i>
+                            <i :class="`fa-solid ${card.icon} text-white text-2xl`"></i>
                         </div>
                         <div>
-                            <h3 class="text-sm font-medium text-gray-600 font-sans tracking-wide">{{ card?.title }}</h3>
-                            <p class="text-2xl font-bold text-">{{ data?.cards[card.valueKey] }}</p>
+                            <h3 class="text-sm font-medium text-gray-600 tracking-wide">{{ card.title }}</h3>
+                            <p class="text-3xl font-bold text-gray-900">{{ data?.cards[card.valueKey] }}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 mx-4 sm:mx-8">
-        <!-- Monthly Revenue -->
-        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95">
-            <h3 class="text-xl font-bold text- mb-5 tracking-tight">Monthly Revenue</h3>
-            <canvas ref="revenueChartRef"></canvas>
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 ">
+            <!-- Monthly Revenue -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95">
+                <h3 class="text-xl font-bold text- mb-5 tracking-tight">Monthly Revenue</h3>
+                <canvas ref="revenueChartRef"></canvas>
+            </div>
+
+            <!-- New Memberships -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95">
+                <h3 class="text-xl font-bold text- mb-5 tracking-tight">New Memberships Per Month</h3>
+                <canvas ref="membershipsChartRef"></canvas>
+            </div>
+
+            <!-- Subscriptions by Plan -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95">
+                <h3 class="text-xl font-bold text- mb-5 tracking-tight">Subscriptions by Plan</h3>
+                <canvas ref="plansChartRef"></canvas>
+            </div>
+
+            <!-- Subscriptions Status -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95">
+                <h3 class="text-xl font-bold text- mb-5 tracking-tight">Subscriptions Status</h3>
+                <canvas ref="statusChartRef"></canvas>
+            </div>
         </div>
 
-        <!-- New Memberships -->
-        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95">
-            <h3 class="text-xl font-bold text- mb-5 tracking-tight">New Memberships Per Month</h3>
-            <canvas ref="membershipsChartRef"></canvas>
-        </div>
-
-        <!-- Subscriptions by Plan -->
-        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95">
-            <h3 class="text-xl font-bold text- mb-5 tracking-tight">Subscriptions by Plan</h3>
-            <canvas ref="plansChartRef"></canvas>
-        </div>
-
-        <!-- Subscriptions Status -->
-        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95">
-            <h3 class="text-xl font-bold text- mb-5 tracking-tight">Subscriptions Status</h3>
-            <canvas ref="statusChartRef"></canvas>
-        </div>
-    </div>
-
-    <div v-if="!isLoading" class="min-h-screen bg-gray-50 text-gray-900 font-sans py-12">
-        <div class="mx-auto p-6 max-w-8xl">
-            <!-- Tables Section -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Recent Members Table -->
-                <div
-                    class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95 transition-all duration-300 hover:shadow-lg">
-                    <h3 class="text-xl font-bold text- mb-5 tracking-tight">Recent Members</h3>
-                    <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-">
-                                <tr>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        ID</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        Name</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans hidden sm:table-cell">
-                                        Email</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans hidden md:table-cell">
-                                        Phone</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100" v-if="data && data.tables">
-                                <tr v-for="member in data.tables.recent_members" :key="member.id"
-                                    class="hover:bg-/30 transition-colors duration-200">
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans">
-                                        {{ member.id }}</td>
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans">
-                                        {{ member.name }}</td>
-                                    <td
-                                        class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans hidden sm:table-cell">
-                                        {{ member.email || 'N/A' }}</td>
-                                    <td
-                                        class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans hidden md:table-cell">
-                                        {{ member.phone_number || 'N/A' }}</td>
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full font-sans"
-                                            :class="{
-                                                'bg-green-100 text-green-800': member.status === 'allowed',
-                                                'bg-red-100 text-red-800': member.status === 'banned'
-                                            }">
-                                            {{ member.status }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <!-- Tables Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Recent Members Table -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Members</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    ID</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Name</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">
+                                    Email</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
+                                    Phone</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100" v-if="data && data.tables">
+                            <tr v-for="member in data.tables.recent_members" :key="member.id"
+                                class="hover:bg-indigo-50 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ member.id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ member.name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 hidden sm:table-cell">{{
+                                    member.email || 'N/A' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 hidden md:table-cell">{{
+                                    member.phone_number || 'N/A' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full" :class="{
+                                        'bg-green-100 text-green-800': member.status === 'allowed',
+                                        'bg-red-100 text-red-800': member.status === 'banned'
+                                    }">
+                                        {{ member.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Recent Memberships Table -->
-                <div
-                    class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95 transition-all duration-300 hover:shadow-lg">
-                    <h3 class="text-xl font-bold text- mb-5 tracking-tight">Recent Memberships</h3>
-                    <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-">
-                                <tr>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        ID</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        Member</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans hidden sm:table-cell">
-                                        Plan</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans hidden md:table-cell">
-                                        Start Date</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100" v-if="data && data.tables">
-                                <tr v-for="membership in data.tables.recent_memberships" :key="membership.id"
-                                    class="hover:bg-/30 transition-colors duration-200">
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans">
-                                        {{ membership.id }}</td>
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans">
-                                        {{ membership.member.name }}</td>
-                                    <td
-                                        class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans hidden sm:table-cell">
-                                        {{ membership.plan.name }}</td>
-                                    <td
-                                        class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans hidden md:table-cell">
-                                        {{ membership.start_date }}</td>
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full font-sans"
-                                            :class="{
-                                                'bg-green-100 text-green-800': membership.status === 'active',
-                                                'bg-yellow-100 text-yellow-800': membership.status === 'frozen',
-                                                'bg-red-100 text-red-800': membership.status === 'expired'
-                                            }">
-                                            {{ membership.status }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Recent Memberships Table -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Memberships</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    ID</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Member</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">
+                                    Plan</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
+                                    Start Date</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100" v-if="data && data.tables">
+                            <tr v-for="membership in data.tables.recent_memberships" :key="membership.id"
+                                class="hover:bg-indigo-50 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ membership.id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ membership.member.name
+                                }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 hidden sm:table-cell">{{
+                                    membership.plan.name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 hidden md:table-cell">{{
+                                    membership.start_date }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full" :class="{
+                                        'bg-green-100 text-green-800': membership.status === 'active',
+                                        'bg-yellow-100 text-yellow-800': membership.status === 'frozen',
+                                        'bg-red-100 text-red-800': membership.status === 'expired'
+                                    }">
+                                        {{ membership.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Recent Payments Table -->
-                <div
-                    class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95 transition-all duration-300 hover:shadow-lg">
-                    <h3 class="text-xl font-bold text- mb-5 tracking-tight">Recent Payments</h3>
-                    <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-">
-                                <tr>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        ID</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        Amount</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans hidden sm:table-cell">
-                                        Payment Date</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans hidden md:table-cell">
-                                        Method</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100" v-if="data && data.tables">
-                                <tr v-for="payment in data.tables.recent_payments" :key="payment.id"
-                                    class="hover:bg-/30 transition-colors duration-200">
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans">
-                                        {{ payment.id }}</td>
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans">
-                                        {{ payment.amount }}</td>
-                                    <td
-                                        class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans hidden sm:table-cell">
-                                        {{ payment.payment_date }}</td>
-                                    <td
-                                        class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans hidden md:table-cell">
-                                        {{ payment.method }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Recent Payments Table -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Payments</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    ID</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Amount</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">
+                                    Payment Date</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
+                                    Method</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100" v-if="data && data.tables">
+                            <tr v-for="payment in data.tables.recent_payments" :key="payment.id"
+                                class="hover:bg-indigo-50 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ payment.id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ payment.amount }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 hidden sm:table-cell">{{
+                                    payment.payment_date }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 hidden md:table-cell">{{
+                                    payment.method }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Recent Invoices Table -->
-                <div
-                    class="bg-white p-6 rounded-xl shadow-md border border-gray-200 backdrop-blur-sm bg-opacity-95 transition-all duration-300 hover:shadow-lg">
-                    <h3 class="text-xl font-bold text- mb-5 tracking-tight">Recent Invoices</h3>
-                    <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-">
-                                <tr>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        ID</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        Number</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans hidden sm:table-cell">
-                                        Amount</th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider font-sans">
-                                        Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100" v-if="data && data.tables">
-                                <tr v-for="invoice in data.tables.recent_invoices" :key="invoice.id"
-                                    class="hover:bg-/30 transition-colors duration-200">
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans">
-                                        {{ invoice.id }}</td>
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans">
-                                        {{ invoice.number }}</td>
-                                    <td
-                                        class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-sans hidden sm:table-cell">
-                                        {{ invoice.total_amount }}</td>
-                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full font-sans"
-                                            :class="{
-                                                'bg-green-100 text-green-800': invoice.status === 'paid',
-                                                'bg-red-100 text-red-800': invoice.status !== 'paid'
-                                            }">
-                                            {{ invoice.status }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Recent Invoices Table -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Invoices</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    ID</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Number</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">
+                                    Amount</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100" v-if="data && data.tables">
+                            <tr v-for="invoice in data.tables.recent_invoices" :key="invoice.id"
+                                class="hover:bg-indigo-50 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ invoice.id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ invoice.number }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 hidden sm:table-cell">{{
+                                    invoice.total_amount }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full" :class="{
+                                        'bg-green-100 text-green-800': invoice.status === 'paid',
+                                        'bg-red-100 text-red-800': invoice.status !== 'paid'
+                                    }">
+                                        {{ invoice.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
