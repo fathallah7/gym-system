@@ -5,6 +5,7 @@ import { onMounted } from 'vue';
 import { useToast } from 'vue-toastification';
 import Spinner from '@/components/Spinner.vue';
 import Pagination from '@/components/Pagination.vue';
+import PageHeader from '@/components/PageHeader.vue';
 
 const isLoading = ref(false);
 const toast = useToast();
@@ -85,12 +86,7 @@ onMounted(() => {
 <template>
 
     <!-- Header -->
-    <header class="bg-white shadow p-4 max-w-8xl items-center mx-auto ">
-        <h1 class="flex text-xl font-semibold text-gray-800 items-center">
-            <i class="fa-solid fa-credit-card w-6 mr-2 text-gray-600"></i>
-            Invoices
-        </h1>
-    </header>
+    <PageHeader title="Invoices" icon="fa-solid fa-credit-card" />
 
 
     <!-- Modal -->
