@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import axios from 'axios';
 import { onMounted } from 'vue';
 import { useToast } from 'vue-toastification';
@@ -14,18 +14,21 @@ const isLoading = ref(false);
 const toast = useToast();
 const showModal = ref(false);
 
-const memberships = ref();
+const memberships = ref([]);
 const membershipStatusData = ref();
 const memberID = ref();
 const meta = ref({});
 
-const fetchMemberships = async (page) => {
+const search = ref('');
+
+const fetchMemberships = async (page, term = '') => {
     try {
         isLoading.value = true;
         const response = await axios.get('/memberships',
             {
                 params: {
-                    page: page
+                    page: page,
+                    search: term
                 }
             }
         );
@@ -100,8 +103,12 @@ const closeModal = () => {
     showModal.value = false;
 };
 
+watch(search, (newVal) => {
+    fetchMemberships(1, newVal)
+});
+
 onMounted(() => {
-    fetchMemberships(1);
+    fetchMemberships(1, '');
 });
 </script>
 
@@ -111,7 +118,8 @@ onMounted(() => {
 
     <div class="p-6 overflow-x-auto mx-auto max-w-8xl">
         <!-- Search Bar -->
-        <ActionBar toRoute="/new-membership" buttonText="New Membership" placeholder="Search memberships.." />
+        <ActionBar v-model:search="search" toRoute="/new-membership" buttonText="New Membership"
+            placeholder="Search memberships.." />
 
         <!-- Loading Spinner -->
         <Spinner v-if="isLoading" class="flex justify-center items-center" />

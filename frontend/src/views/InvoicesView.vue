@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import axios from 'axios';
 import { onMounted } from 'vue';
 import { useToast } from 'vue-toastification';
@@ -16,6 +16,8 @@ const selectedInvoiceData = ref(null);
 const invoices = ref([]);
 const meta = ref({})
 
+const search = ref('');
+
 const updateData = ref({
     amount: '',
     payment_method: '',
@@ -23,12 +25,13 @@ const updateData = ref({
     errors: {}
 });
 
-const fetchInvoices = async (page) => {
+const fetchInvoices = async (page, term = '') => {
     try {
         isLoading.value = true;
         const response = await axios.get('/invoices', {
             params: {
-                page: page
+                page: page,
+                search: term
             }
         });
         invoices.value = response.data.data;
@@ -76,8 +79,12 @@ const update = async () => {
     }
 };
 
+watch(search, (newVal) => {
+    fetchInvoices(1, newVal)
+})
+
 onMounted(() => {
-    fetchInvoices(1);
+    fetchInvoices(1, '');
 });
 
 </script>
@@ -183,7 +190,7 @@ onMounted(() => {
     <div class="p-6 overflow-x-auto mx-auto max-w-8xl">
         <!-- Search Bar -->
         <div class="mb-6 flex items-center justify-between gap-4">
-            <input type="text" placeholder="Search projects..."
+            <input v-model="search" type="text" placeholder="Search projects..."
                 class="w-full max-w-md rounded-lg border border-gray-400 px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                 aria-label="Search projects" />
         </div>

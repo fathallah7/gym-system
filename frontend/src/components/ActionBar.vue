@@ -13,15 +13,17 @@ const props = defineProps({
     toRoute: {
         type: String,
         required: true,
-    }
+    },
 });
+const search = defineModel('search')
+
 </script>
 
 
 <template>
 
     <div class="mb-3 flex items-center justify-between gap-4">
-        <input type="text" :placeholder="placeholder"
+        <input v-model="search" type="text" :placeholder="placeholder"
             class="w-full max-w-md rounded-lg border border-gray-400 px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black" />
 
         <RouterLink :to="toRoute"

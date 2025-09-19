@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import axios from 'axios';
 import { onMounted } from 'vue';
 import { useToast } from 'vue-toastification';
@@ -13,15 +13,18 @@ const isLoading = ref(false);
 
 const toast = useToast();
 
-const members = ref();
+const members = ref([]);
 const meta = ref({});
 
-const fetchMembers = async (page) => {
+const search = ref('')
+
+const fetchMembers = async (page, term = '') => {
     try {
         isLoading.value = true;
         const response = await axios.get('/member', {
             params: {
-                page: page
+                page: page,
+                search: term
             }
         });
         members.value = response.data.data;
@@ -54,8 +57,12 @@ const deleteMember = async ($id) => {
     }
 };
 
+watch(search, (newVal) => {
+    fetchMembers(1, newVal)
+})
+
 onMounted(() => {
-    fetchMembers(1);
+    fetchMembers(1, '');
 });
 
 </script>
@@ -68,7 +75,7 @@ onMounted(() => {
 
     <div class="p-6 overflow-x-auto mx-auto max-w-8xl">
         <!-- Bar -->
-        <ActionBar toRoute="/new-member" buttonText="New Member" placeholder="Search members.." />
+        <ActionBar v-model:search="search" toRoute="/new-member" buttonText="New Member" placeholder="Search members.." />
 
         <!-- Loading Spinner -->
         <Spinner v-if="isLoading" class="flex justify-center items-center" />
