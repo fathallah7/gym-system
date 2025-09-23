@@ -119,7 +119,6 @@ onMounted(() => {
     </header>
 
 
-
     <!-- Loading Spinner -->
     <Spinner v-if="isLoading" class="flex justify-center items-center" />
 
@@ -132,10 +131,6 @@ onMounted(() => {
                     <i class="fa-solid fa-users mr-3 text-blue-600"></i>
                     Membership Metrics
                 </h2>
-                <div class="text-sm text-gray-500 flex items-center">
-                    <i class="fa-solid fa-calendar-days mr-1"></i>
-                    Last 30 days
-                </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="(card, index) in membershipCards" :key="index"
@@ -153,12 +148,6 @@ onMounted(() => {
                             <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2">{{ card.title
                                 }}</h3>
                             <p class="text-3xl font-bold text-gray-900">{{ data?.cards[card.valueKey] || 0 }}</p>
-                            <!-- Trend indicator -->
-                            <div class="flex items-center mt-2 text-xs">
-                                <i class="fa-solid fa-arrow-trend-up text-emerald-600 mr-1"></i>
-                                <span class="text-emerald-600 font-medium">+{{ Math.floor(Math.random() * 15) + 5
-                                    }}%</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -172,10 +161,6 @@ onMounted(() => {
                     <i class="fa-solid fa-dollar-sign mr-3 text-green-600"></i>
                     Payment Metrics
                 </h2>
-                <div class="text-sm text-gray-500 flex items-center">
-                    <i class="fa-solid fa-chart-line mr-1"></i>
-                    This month
-                </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="(card, index) in paymentCards" :key="index"
@@ -192,11 +177,6 @@ onMounted(() => {
                             <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2">{{ card.title
                                 }}</h3>
                             <p class="text-3xl font-bold text-gray-900">${{ data?.cards[card.valueKey] || 0 }}</p>
-                            <div class="flex items-center mt-2 text-xs">
-                                <i class="fa-solid fa-arrow-trend-up text-emerald-600 mr-1"></i>
-                                <span class="text-emerald-600 font-medium">+{{ Math.floor(Math.random() * 25) + 10
-                                    }}%</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,10 +190,6 @@ onMounted(() => {
                     <i class="fa-solid fa-file-invoice mr-3 text-purple-600"></i>
                     Invoice Metrics
                 </h2>
-                <div class="text-sm text-gray-500 flex items-center">
-                    <i class="fa-solid fa-clock mr-1"></i>
-                    Today
-                </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="(card, index) in invoiceCards" :key="index"
@@ -230,11 +206,6 @@ onMounted(() => {
                             <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2">{{ card.title
                                 }}</h3>
                             <p class="text-3xl font-bold text-gray-900">{{ data?.cards[card.valueKey] || 0 }}</p>
-                            <div class="flex items-center mt-2 text-xs">
-                                <i class="fa-solid fa-arrow-trend-up text-emerald-600 mr-1"></i>
-                                <span class="text-emerald-600 font-medium">+{{ Math.floor(Math.random() * 10) + 2
-                                    }}%</span>
-                            </div>
                         </div>
                     </div>
                 </div>

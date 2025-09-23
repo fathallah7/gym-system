@@ -23,7 +23,7 @@ const emit = defineEmits(['close-modal', 'member-update-status' , 'update:member
 
 
     <div v-if="showModal"
-        class="fixed inset-0 bg-black/50 bg-opacity-60 flex items-center justify-center z-50 transition-opacity duration-300"
+        class="fixed p-5 inset-0 bg-black/50 bg-opacity-60 flex items-center justify-center z-50 transition-opacity duration-300"
         :class="{ 'opacity-100': showModal, 'opacity-0': !showModal }">
         <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-100">
             <div class="flex justify-between items-center mb-6">
