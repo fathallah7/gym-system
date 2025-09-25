@@ -208,7 +208,6 @@ onMounted(() => {
                         <th class="px-6 py-4 text-sm font-medium text-gray-700 hidden lg:table-cell">Status</th>
                         <th class="px-6 py-4 text-sm font-medium text-gray-700 hidden xl:table-cell">Membership ID</th>
                         <th class="px-6 py-4 text-sm font-medium text-gray-700 hidden xl:table-cell">Member Name</th>
-                        <th class="px-6 py-4 text-sm font-medium text-gray-700">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -257,12 +256,6 @@ onMounted(() => {
                         </td>
                         <td class="p-4 hidden xl:table-cell">
                             <p class="text-sm text-gray-900">{{ invoice.membership?.member?.name ?? 'N/A' }}</p>
-                        </td>
-                        <td class="p-4">
-                            <button
-                                class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
-                                <i class="fa-solid fa-print"></i>
-                            </button>
                         </td>
                     </tr>
                 </tbody>

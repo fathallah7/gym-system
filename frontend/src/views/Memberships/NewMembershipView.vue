@@ -3,7 +3,6 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
-import Spinner from '@/components/Spinner.vue';
 
 const toast = useToast();
 const isLoading = ref(false);
@@ -28,9 +27,9 @@ const fetchData = async () => {
     try {
         const membersResponse = await axios.get('/member');
         const plansResponse = await axios.get('/plans');
-        members.value = membersResponse.data;
+        members.value = membersResponse.data.data;
         plans.value = plansResponse.data.data;
-        console.log(members.value);
+        console.log(members.value.data);
         console.log(plans.value);
     } catch (error) {
         console.log(error);
@@ -94,13 +93,10 @@ onMounted(() => {
 
                                 <!-- Name Input -->
                                 <div>
-                                    <label class="mb-1.5 block text-sm font-medium text-gray-700">Member</label>
-                                    <select v-model="form.member_id" id="member_id"
-                                        class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10 focus:outline-none"
+                                    <label class="mb-1.5 block text-sm font-medium text-gray-700">Member ID</label>
+                                    <input v-model="form.member_id" type="text" placeholder="Enter member ID"
+                                        class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10 focus:outline-none"
                                         :class="{ 'border-red-700': form.errors.member_id }">
-                                        <option value="selected" selected disabled>Select Option</option>
-                                        <option v-for="member in members" :value="member.id">{{ member.name }}</option>
-                                    </select>
                                     <div v-if="form.errors.member_id" class="error">
                                         <p class="text-sm text-red-700">{{ form.errors.member_id[0] }}</p>
                                     </div>
@@ -210,7 +206,7 @@ onMounted(() => {
                 <div class="mt-6 flex justify-center">
                     <button type="submit" :disabled="isLoading" :class="{ 'opacity-50 cursor-not-allowed': isLoading }"
                         class="inline-flex w-full max-w-sm cursor-pointer items-center justify-center rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150">
-                        Add Member
+                        Add Membership
                     </button>
                 </div>
 
