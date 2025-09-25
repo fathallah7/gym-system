@@ -1,26 +1,25 @@
 <script setup>
-import { onMounted } from 'vue';
-import { RouterLink } from 'vue-router';
+import { onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
 
+const emit = defineEmits(['link-clicked'])
 
-
-
-const logout = () => {
-    localStorage.removeItem('token');
-};
+function logout() {
+    localStorage.removeItem('token')
+}
 
 onMounted(() => {
     // Dropdown toggle
-    document.querySelectorAll('.flex.items-center.p-2').forEach(item => {
+    document.querySelectorAll('.flex.items-center.p-2').forEach((item) => {
         item.addEventListener('click', (e) => {
-            e.preventDefault();
-            const dropdown = item.nextElementSibling;
+            e.preventDefault()
+            const dropdown = item.nextElementSibling
             if (dropdown && dropdown.hasAttribute('data-dropdown')) {
-                dropdown.classList.toggle('hidden');
+                dropdown.classList.toggle('hidden')
             }
-        });
-    });
-});
+        })
+    })
+})
 </script>
 
 
@@ -28,14 +27,15 @@ onMounted(() => {
 <template>
 
     <nav class="flex-1 p-4 overflow-y-auto">
-        
+
         <!-- Menu Group -->
         <div>
             <h3 class="mb-4 text-xs font-semibold uppercase text-gray-400">Main Menu</h3>
             <ul class="space-y-2">
                 <!-- Menu Item Dashboard -->
                 <li>
-                    <RouterLink to="home" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                    <RouterLink @click="$emit('link-clicked')" to="home"
+                        class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                         :class="{ 'bg-gray-100 rounded-lg': $route.path === '/home' }">
                         <i class="fa-solid fa-chart-line w-6 mr-2 text-gray-600"></i>
                         Dashboard
@@ -44,7 +44,7 @@ onMounted(() => {
 
                 <!-- Menu  Memberships -->
                 <li>
-                    <RouterLink to="memberships"
+                    <RouterLink @click="$emit('link-clicked')" to="memberships"
                         class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                         :class="{ 'bg-gray-100 rounded-lg': $route.path === '/memberships' }">
                         <i class="fa-solid fa-id-card w-6 mr-2"></i>
@@ -54,7 +54,8 @@ onMounted(() => {
 
                 <!-- Menu  Members -->
                 <li>
-                    <RouterLink to="members" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                    <RouterLink @click="$emit('link-clicked')" to="members"
+                        class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                         :class="{ 'bg-gray-100 rounded-lg': $route.path === '/members' }">
                         <i class="fa-solid fa-users w-6 mr-2 text-gray-600"></i>
                         Members
@@ -69,7 +70,8 @@ onMounted(() => {
             <ul class="space-y-2">
                 <!-- New Member -->
                 <li>
-                    <RouterLink to="new-member" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                    <RouterLink @click="$emit('link-clicked')" to="new-member"
+                        class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                         :class="{ 'bg-gray-100 rounded-lg': $route.path === '/new-member' }">
                         <i class="fa-solid fa-user-plus w-6 mr-2 text-gray-600"></i>
                         New Member
@@ -78,7 +80,7 @@ onMounted(() => {
 
                 <!-- New Membership -->
                 <li>
-                    <RouterLink to="new-membership"
+                    <RouterLink @click="$emit('link-clicked')" to="new-membership"
                         class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                         :class="{ 'bg-gray-100 rounded-lg': $route.path === '/new-membership' }">
                         <i class="fa-solid fa-file-circle-plus w-6 mr-2"></i>
@@ -94,7 +96,8 @@ onMounted(() => {
             <ul class="space-y-2">
                 <!-- Item Plans -->
                 <li>
-                    <RouterLink to="plans" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                    <RouterLink @click="$emit('link-clicked')" to="plans"
+                        class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                         :class="{ 'bg-gray-100 rounded-lg': $route.path === '/plans' }">
                         <i class="fa-solid fa-layer-group w-6 mr-2 text-gray-600"></i>
                         Plans
@@ -103,7 +106,8 @@ onMounted(() => {
 
                 <!-- Item Invoices -->
                 <li>
-                    <RouterLink to="invoices" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                    <RouterLink @click="$emit('link-clicked')" to="invoices"
+                        class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
                         :class="{ 'bg-gray-100 rounded-lg': $route.path === '/invoices' }">
                         <i class="fa-solid fa-credit-card w-6 mr-2 text-gray-600"></i>
                         Payments & Invoices

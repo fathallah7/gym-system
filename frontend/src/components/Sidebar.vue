@@ -1,15 +1,18 @@
-<script setup lang="ts">
+<script setup>
+import { RouterLink } from 'vue-router'
+import SidebarLinks from './SidebarLinks.vue'
 
-import { RouterLink } from 'vue-router';
-import SidebarLinks from './SidebarLinks.vue';
+const props = defineProps({
+    isSidebarOpen: Boolean
+})
 
-defineProps<{
-    isSidebarOpen: boolean;
-}>();
-defineEmits<{
-    (e: 'close-sidebar'): void;
-}>();
+const emit = defineEmits(['close-sidebar'])
 
+function handleLinkClick() {
+    if (window.innerWidth < 1024) {
+        emit('close-sidebar')
+    }
+}
 </script>
 
 <template>
@@ -23,10 +26,9 @@ defineEmits<{
             <RouterLink to="/home" class="flex items-center justify-center w-full">
                 <img src="../assets/logo3.webp" alt="Logo" class="h-28 mx-auto" />
             </RouterLink>
-
         </div>
 
         <!-- Sidebar Menu -->
-        <SidebarLinks />
+        <SidebarLinks @link-clicked="handleLinkClick" />
     </aside>
 </template>
