@@ -1,27 +1,19 @@
 <?php
 
-use App\Http\Controllers\AttendancesController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\InvoicesController;
-use App\Http\Controllers\MemberController;
-use App\Http\Controllers\MembershipController;
-use App\Http\Controllers\PlanController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application.
+| Routes are versioned and loaded from separate files.
+|
+*/
 
-    Route::apiResource('/member', MemberController::class);
+// API Version 1
+Route::prefix('v1')->group(base_path('routes/api_v1.php'));
 
-    Route::apiResource('/plans', PlanController::class);
+// Authentication Routes (no version prefix)
 
-    Route::apiResource('/memberships', MembershipController::class);
-    
-    Route::apiResource('/invoices', InvoicesController::class);
-
-    Route::get('/dashboard' , [DashboardController::class , 'index']);  
-
-    Route::put('/memberships/{membership}/attendance', [AttendancesController::class, 'update']);
-
-});
-
-require __DIR__ . '/auth.php';

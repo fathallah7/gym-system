@@ -3,109 +3,107 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MembershipRequest;
-use App\Mail\PaymentInvoiceMail;
-use App\Models\Invoice;
-use App\Models\Member;
+use App\Http\Resources\MembershipResource;
 use App\Models\Membership;
-use App\Models\Payment;
-use App\Models\Plan;
+use App\Services\MembershipService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class MembershipController extends Controller
 {
+    public function __construct(
+        protected MembershipService $membershipService
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        $query = Membership::with(['member', 'plan']);
+        $this->authorize('viewAny', Membership::class);
 
-        if ($search = $request->query('search')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('id', 'like', "%{$search}%")
-                    ->orWhereHas('member', function ($mq) use ($search) {
-                        $mq->where('name', 'like', "%{$search}%");
-                    });
-            });
-        }
+        $search = $request->query('search');
+        $memberships = $this->membershipService->getMemberships($search);
 
-        $memberships = $query->paginate(15);
-
-        return response()->json($memberships);
+        return response()->json([
+            'success' => true,
+            'data' => MembershipResource::collection($memberships->items()),
+            'meta' => [
+                'current_page' => $memberships->currentPage(),
+                'last_page' => $memberships->lastPage(),
+                'per_page' => $memberships->perPage(),
+                'total' => $memberships->total(),
+            ],
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(MembershipRequest $request)
+    public function store(MembershipRequest $request): JsonResponse
     {
-
-        $request->validated();
+        $this->authorize('create', Membership::class);
 
         try {
-            DB::transaction(function () use ($request) {
+            $membership = $this->membershipService->createMembership($request->validated());
 
-                $plan = Plan::findOrFail($request->plan_id);
-
-                $membership = Membership::create([
-                    'member_id'  => $request->member_id,
-                    'plan_id'    => $request->plan_id,
-                    'start_date' => now(),
-                    'end_date'   => now()->addDays($request->duration),
-                    'remaining_sessions' => $plan->sessions,
-                ]);
-
-                $invoice = Invoice::create([
-                    'membership_id' => $membership->id,
-                    'number' => 'INV-' . time(),
-                    'total_amount'  => $request->total_amount,
-                    'status'        => $request->status,
-                ]);
-
-                $payment = Payment::create([
-                    'invoice_id' => $invoice->id,
-                    'amount'        => $request->amount,
-                    'method'        => $request->payment_method,
-                    'note'        => $request->note,
-                ]);
-
-                $member = Member::find($request->member_id);
-                if ($member?->email) {
-                    Mail::to($member->email)->send(new PaymentInvoiceMail($invoice));
-                }
-            });
-            return response()->json(['message' => 'Membership, Payment, and Invoice created successfully']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Membership, Payment, and Invoice created successfully',
+                'data' => new MembershipResource($membership),
+            ], 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to create membership, payment, or invoice', 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create membership, payment, or invoice',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id) {}
+    public function show(Membership $membership): JsonResponse
+    {
+        $this->authorize('view', $membership);
+
+        $membership = $this->membershipService->getMembership($membership);
+
+        return response()->json([
+            'success' => true,
+            'data' => new MembershipResource($membership),
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Membership $membership)
+    public function update(MembershipRequest $request, Membership $membership): JsonResponse
     {
-        $request->validate([
-            'status'    => 'required|string|in:active,canceled,expired,frozen',
-        ]);
-        $membership->update($request->all());
+        $this->authorize('update', $membership);
 
-        return response()->json(['message' => 'Membership updated successfully']);
+        $membership = $this->membershipService->updateMembership($membership, $request->validated());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Membership updated successfully',
+            'data' => new MembershipResource($membership),
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Membership $membership)
+    public function destroy(Membership $membership): JsonResponse
     {
-        $membership->delete();
-        return response()->json(['message' => 'Membership deleted successfully']);
+        $this->authorize('delete', $membership);
+
+        $this->membershipService->deleteMembership($membership);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Membership deleted successfully',
+        ]);
     }
 }

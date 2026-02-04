@@ -2,104 +2,112 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\PaymentInvoiceMail;
+use App\Http\Requests\InvoiceRequest;
+use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice;
-use App\Models\Payment;
-use Illuminate\Support\Facades\DB;
+use App\Services\InvoiceService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class InvoicesController extends Controller
 {
+    public function __construct(
+        protected InvoiceService $invoiceService
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        $query = Invoice::with('membership.member', 'payments')
-            ->withSum('payments', 'amount');
+        $this->authorize('viewAny', Invoice::class);
 
-        if ($search = $request->query('search')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('number', 'like', "%{$search}%")
-                    ->orWhereHas('membership.member', function ($im) use ($search) {
-                        $im->where('name', 'like', "%{$search}%");
-                    });
-            });
-        }
+        $search = $request->query('search');
+        $invoices = $this->invoiceService->getInvoices($search);
 
-        $invoices = $query->paginate(15);
-
-        return response()->json($invoices);
+        return response()->json([
+            'success' => true,
+            'data' => InvoiceResource::collection($invoices->items()),
+            'meta' => [
+                'current_page' => $invoices->currentPage(),
+                'last_page' => $invoices->lastPage(),
+                'per_page' => $invoices->perPage(),
+                'total' => $invoices->total(),
+            ],
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        //
+        // Invoices are created automatically with memberships
+        return response()->json([
+            'success' => false,
+            'message' => 'Invoices are created automatically when creating memberships',
+        ], 400);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Invoice $invoice)
+    public function show(Invoice $invoice): JsonResponse
     {
-        $invoice->load('payments');
-        return response()->json($invoice);
+        $this->authorize('view', $invoice);
+
+        $invoice = $this->invoiceService->getInvoice($invoice);
+
+        return response()->json([
+            'success' => true,
+            'data' => new InvoiceResource($invoice),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Invoice $invoice)
+    public function update(InvoiceRequest $request, Invoice $invoice): JsonResponse
     {
-        $request->validate([
-            'amount' => 'required|numeric',
-            'status' => 'required|in:paid,partial,canceled',
-            'payment_method' => 'required|string|in:cash,other',
-        ]);
+        $this->authorize('update', $invoice);
 
         try {
-            DB::transaction(function () use ($request, $invoice) {
+            $invoice = $this->invoiceService->processPayment($invoice, $request->validated());
 
-                $invoice->update([
-                    'status' => $request->status,
-                ]);
-
-                Payment::create([
-                    'amount' => $request->amount,
-                    'payment_method' => $request->payment_method,
-                    'invoice_id' => $invoice->id
-                ]);
-
-                if ($invoice->membership->member->email) {
-                    Mail::to($invoice->membership->member->email)->send(new PaymentInvoiceMail($invoice));
-                }
-            });
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment processed successfully',
+                'data' => new InvoiceResource($invoice),
+            ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update invoice'], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to process payment',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json('Done');
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice)
+    public function destroy(Invoice $invoice): JsonResponse
     {
-        try {
-            DB::transaction(function () use ($invoice) {
-                $invoice->payments()->delete();
-                $invoice->delete();
-            });
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to delete invoice'], 500);
-        }
+        $this->authorize('delete', $invoice);
 
-        return response()->json('Done');
+        try {
+            $this->invoiceService->deleteInvoice($invoice);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Invoice deleted successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete invoice',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
